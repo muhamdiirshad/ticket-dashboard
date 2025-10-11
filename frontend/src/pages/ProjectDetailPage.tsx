@@ -41,11 +41,15 @@ export default function ProjectDetailPage() {
     return () => { socket.emit('leave-project', id); socket.disconnect(); };
   }, [id]);
 
-  const onCreate = () => { if (!title) return; dispatch(createTicket({ projectId: id, title, description: desc })); setTitle(''); setDesc(''); };
+  const onCreate = () => {
+    if (!id) return;
+    dispatch(createTicket({ projectId: id as string, title, description: desc }));
+    setTitle(''); setDesc('');
+  };
   const onMove = (ticketId: string | undefined, newStatus: string) => {
-  if (!ticketId) return console.error('❌ Missing ticketId');
-  dispatch(editTicket({ id: ticketId, update: { status: newStatus } }));
-};
+    if (!ticketId) return console.error('❌ Missing ticketId');
+    dispatch(editTicket({ id: ticketId, update: { status: newStatus } }));
+  };
 
   if (!project) return <div><Navbar /><div className="container">Loading...</div></div>;
 
