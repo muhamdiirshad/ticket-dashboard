@@ -7,6 +7,20 @@ import NotificationModel from '../../models/Notification';
 
 const OFFLINE_THRESHOLD_MS = Number(process.env.OFFLINE_THRESHOLD_MS ?? 60000);
 
+let io: IOServer | null = null;
+
+/**
+ * Initializes the global Socket.IO instance for notifications.
+ */
+export function initNotificationIo(ioInstance: IOServer) {
+  io = ioInstance;
+  setIoInstance(ioInstance);
+  console.log('✅ Notification service initialized.');
+}
+
+/**
+ * Main Notification Service class.
+ */
 class NotificationService {
   constructor(private io: IOServer) {
     setIoInstance(io);
@@ -35,7 +49,11 @@ class NotificationService {
       } else {
         const lastSeen = user.lastSeen ? new Date(user.lastSeen).getTime() : 0;
         if (Date.now() - lastSeen > OFFLINE_THRESHOLD_MS) {
-          await emailStrategy.notify({ to: String(user.email), subject: 'Ticket update', message });
+          await emailStrategy.notify({
+            to: String(user.email),
+            subject: 'Ticket Update',
+            message
+          });
         }
       }
     }
@@ -43,7 +61,3 @@ class NotificationService {
 }
 
 export default NotificationService;
-export function initNotificationIo(io: any) {
-  throw new Error('Function not implemented.');
-}
-
