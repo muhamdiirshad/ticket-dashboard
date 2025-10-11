@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import NotificationService from '../services/notifications/notification.service';
+import * as NotificationService from '../services/notifications/notification.service';
 import NotificationModel from '../models/Notification';
 
 export default function createNotificationRouter(io: any, userSocketMap: Map<string, Set<string>>) {
   const router = Router();
-  const notificationService = new NotificationService(io, userSocketMap);
 
   router.get('/', async (req: any, res) => {
     try {
@@ -14,7 +13,7 @@ export default function createNotificationRouter(io: any, userSocketMap: Map<str
       res.status(500).json({ error: 'Failed to fetch notifications' });
     }
   });
-  
+
   router.put('/:id/read', async (req, res) => {
     try {
       await NotificationModel.findByIdAndUpdate(req.params.id, { read: true });
