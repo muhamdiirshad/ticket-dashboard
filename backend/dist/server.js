@@ -17,7 +17,13 @@ const db_1 = require("./config/db");
 const User_1 = __importDefault(require("./models/User"));
 const notification_service_1 = require("./services/notifications/notification.service");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: [
+        'https://ticket-dashboard.vercel.app', // your frontend live link
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 app.use(express_1.default.json());
 // Register API routes
 app.use('/api/auth', auth_routes_1.default);
