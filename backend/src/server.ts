@@ -13,7 +13,14 @@ import User from './models/User';
 import { initNotificationIo } from './services/notifications/notification.service';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://ticket-dashboard.vercel.app', // your frontend live link
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Register API routes
