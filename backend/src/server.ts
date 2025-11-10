@@ -17,7 +17,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://ticket-dashboard.vercel.app"
+      "https://ticket-dashboard-enl6.vercel.app/"
     ],
     credentials: true,
   })
